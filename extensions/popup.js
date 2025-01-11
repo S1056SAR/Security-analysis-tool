@@ -86,7 +86,7 @@ async function analyzeUrl() {
       console.log('Response received:', data);
 
       if (response.ok) {
-          const confidencePercentage = (data.confidence * 100).toFixed(2);
+          
           const resultHtml = `
               <div class="space-y-3">
                   <div class="flex items-center ${data.is_malicious ? 'text-red-600' : 'text-green-600'}">
@@ -97,7 +97,6 @@ async function analyzeUrl() {
                   </div>
                   <div class="bg-gray-100 p-3 rounded text-sm">
                       <p class="text-gray-700 truncate"><strong>URL:</strong> ${data.url}</p>
-                      <p class="text-gray-700"><strong>Confidence:</strong> ${confidencePercentage}%</p>
                   </div>
                   <p class="text-xs text-gray-600">
                       ${data.is_malicious 
