@@ -6,7 +6,7 @@ from flask_cors import CORS
 import re
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for Chrome extension
+CORS(app)  
 
 # Load the trained model
 model = load_model('Malicious_URL_Prediction.h5')
@@ -15,37 +15,37 @@ def preprocess_url(url):
     features = []
     parsed = urlparse(url)
     
-    # Features matching the training data
+   
     features.append(len(urlparse(url).netloc))  # hostname_length
     features.append(len(urlparse(url).path))    # path_length
     
-    # First Directory Length
+   
     try:
         features.append(len(urlparse(url).path.split('/')[1]))  # fd_length
     except:
         features.append(0)
     
-    # Special character counts
-    features.append(url.count('-'))   # count-
-    features.append(url.count('@'))   # count@
-    features.append(url.count('?'))   # count?
-    features.append(url.count('%'))   # count%
-    features.append(url.count('.'))   # count.
-    features.append(url.count('='))   # count=
-    features.append(url.count('http'))  # count-http
-    features.append(url.count('https')) # count-https
-    features.append(url.count('www'))   # count-www
     
-    # Count digits
-    features.append(sum(c.isdigit() for c in url))  # count-digits
+    features.append(url.count('-'))   
+    features.append(url.count('@'))  
+    features.append(url.count('?'))   
+    features.append(url.count('%'))   
+    features.append(url.count('.'))   
+    features.append(url.count('='))   
+    features.append(url.count('http'))  
+    features.append(url.count('https')) 
+    features.append(url.count('www'))  
     
-    # Check for IP address
+    
+    features.append(sum(c.isdigit() for c in url))  
+    
+    
     ip_pattern = re.compile(
         '(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\/)|'
         '((0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\/)|'
         '(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}'
     )
-    features.append(1 if not ip_pattern.search(url) else -1)  # use_of_ip
+    features.append(1 if not ip_pattern.search(url) else -1)  
 
     return np.array(features).reshape(1, -1)
 
